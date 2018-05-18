@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+
+<head>
+  <title>Zuidas: kans op lithoklasse</title>
+  <meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+  <meta http-equiv='X-UA-Compatible' content='chrome=1,IE=edge' />
+  <!--
+  <link rel='stylesheet' type='text/css' href='../x3dom/x3dom.css' />
+  <script type='text/javascript' src='../x3dom/x3dom-full.js'></script>
+  -->
+  <link rel='stylesheet' type='text/css' href='slider.css' />
+  <link rel='stylesheet' type='text/css' href='https://x3dom.org/download/dev/x3dom.css' />
+  <script type='text/javascript' src='https://x3dom.org/download/dev/x3dom-full.js'></script>
+  <script type='text/javascript' src='x3dom\x3dom_reverseMousewheel.user.js'></script>
+  <style media='screen' type='text/css'>
+    html,body {
+      height:100%;
+      width: 100%;
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 4px;
+    }
+    .control {
+      display: inline;
+      padding-right: 20px;
+    }
+    .slider {
+      width: 240px !important;
+    }
+    .button {
+      font-size: 16px;
+      border: 1px solid white;
+      color: white;
+      padding: 3px 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .antropogeen {background-color: #c1c3c6;}
+    .veen {background-color: #985045;}
+    .klei {background-color: #189f48;}
+    .kleiig_zand {background-color: #b6d169;}
+    .zand_fijn {background-color: #fff000;}
+    .zand_matig_grof{background-color: #ffdc00;}
+    .zand_grof{background-color: #ffc800;}
+    .grind{background-color: #ffb400;}
+    .black{
+      background-color: black;
+      color: white;
+    }
+    .white{
+      background-color: white;
+      color: black;
+    }
+    .stroke {
+      color: white;
+      text-shadow:
+      -1px -1px 0 #555,
+      1px -1px 0 #555,
+      -1px 1px 0 #555,
+      1px 1px 0 #555;
+    }
+    #help {
+      position: absolute;
+      right: 40px;
+      background-color: black;
+    }
+    #heading {
+      position: relative;
+      width: 100%;
+      top: 0px;
+      height: auto;
+      vertical-align: middle;
+      background: rgba(10, 10, 10, 0.7);
+      z-index: 100000;
+      padding-left: 20px;
+      padding-bottom: 10px;
+      padding-top: 2px;
+    }
+    #x3d {
+      position: absolute;
+      top: 0px;
+      bottom: 0px;
+      left: 0px;
+      right: 0px;
+    }
+    .grayout {
+      opacity: 0.6;
+    }
+    div label, div input, div output {
+      vertical-align: middle;
+      padding:0px;
+      margin:0px;
+    }
+    #helptext {
+      display:none;
+      position: absolute;
+      width: 540px;
+      height: 620px;
+      background: rgba(10, 10, 10, 0.9);
+      padding: 16px;
+      padding-left: 26px;
+      border: 2px solid white;
+      z-index: 100000;
+      left:50%;
+      top: 20%;
+      margin-right: -50%;
+      transform: translate(-50%, 0);
+    }
+    #helptext a {
+      text-decoration: none;
+      color: #ddd;
+      display: block;
+      transition: 0.3s;
+    }
+    #helptext a:hover, .offcanvas a:focus{
+      color: #fff;
+    }
+    .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+  </style>
+  <script type="text/javascript">
+    var crosssectionDirection;
+    function init() {
+      document.getElementById('slider_opacity').oninput = (function() {
+        document.getElementById('OpVS').setAttribute('opacityFactor', this.value);
+      });
+      document.getElementById('slider_depth_factor').oninput = (function() {
+        document.getElementById('geotop_transform').setAttribute('scale', '8000,4000,' + 50*this.value);
+        document.getElementById('geotop_transform').setAttribute('translation', '120000,483000,' + -25*this.value);
+        document.getElementById('depth_factor').value = this.value;
+      });
+      document.getElementById('slider_crosssection').oninput = (function() {
+        document.getElementById('MPRVolStyle').setAttribute('positionLine', 1 - this.value);
+        console.log('direction: ', crosssectionDirection);
+        switch (crosssectionDirection) {
+          case 'ns':
+            document.getElementById('crosssectionPos').value = Math.round(this.value * 8000) + ' meter';
+            break;
+          case 'ew':
+            document.getElementById('crosssectionPos').value = Math.round(this.value * 4000) + ' meter';
+            break;
+          case 'hl':
+            document.getElementById('crosssectionPos').value = Math.round((1 - this.value) * -50 ) + ' meter';
+            break;
+        }
+      });
+    }
+    function switch_litho_class(lithoclass) {
+      document.getElementById('volumeSwitcher').setAttribute('whichChoice', '0');
+      document.getElementById('ctrlCrosssection').setAttribute('style', 'opacity: 0.5;');
+      document.getElementById('ctrlBrightness').setAttribute('style', 'opacity: 1;');
+      var maxOpacity = 10;
+      document.getElementById('probabilityAtlas').setAttribute('url', 'atlas_' + lithoclass + '.png');
+      document.getElementById('texture').setAttribute('url', 'transfer_' + lithoclass + '.png');
+      document.getElementById('OpVS').setAttribute('opacityFactor', (maxOpacity/2).toString());
+      document.getElementById('slider_opacity').setAttribute('max', maxOpacity.toString());
+      document.getElementById('slider_opacity').value = (maxOpacity/2).toString();
+    }
+    function switch_bgcolour(colour) {
+      document.body.style.backgroundColor = colour;
+    }
+    function crosssection(direction) {
+      crosssectionDirection = direction;
+      document.getElementById('volumeSwitcher').setAttribute('whichChoice', '1');
+      document.getElementById('ctrlCrosssection').setAttribute('style', 'opacity: 1;');
+      document.getElementById('ctrlBrightness').setAttribute('style', 'opacity: 0.5;');
+      document.getElementById('MPRVolStyle').setAttribute('positionLine','0.5');
+      document.getElementById('slider_crosssection').value = 0.5;
+      switch (direction) {
+        case 'ns':
+          document.getElementById('MPRVolStyle').setAttribute('originLine','1,1,0');
+          document.getElementById('MPRVolStyle').setAttribute('finalLine','0,1,0');
+          document.getElementById('crosssectionPos').value = '4000 meter';
+          break;
+        case 'ew':
+          document.getElementById('MPRVolStyle').setAttribute('originLine','0,1,1');
+          document.getElementById('MPRVolStyle').setAttribute('finalLine','0,0,1');
+          document.getElementById('crosssectionPos').value = '2000 meter';
+          break;
+        case 'hl':
+          document.getElementById('MPRVolStyle').setAttribute('originLine','1,0,1');
+          document.getElementById('MPRVolStyle').setAttribute('finalLine','1,0,0');
+          document.getElementById('crosssectionPos').value = '-25 meter';
+          break;
+      }
+    }
+    function showHelp() {
+      document.getElementById('helptext').setAttribute('style', 'display:block;');
+    }
+    function closeHelp() {
+      document.getElementById('helptext').setAttribute('style', 'display:none;');
+    }
+  </script>
+</head>
+
+<body onload='init();'>
+<div id='heading'>
+  <h1>Zuidas Amsterdam: ondergrond volgens GeoTop</h1>
+  <button id='help' class='button' onclick='showHelp()' style='float: right;'>Hulp</button>
+  Waarschijnlijkheid lithoklasse:<div class='control'>
+    <button class='button stroke veen' onclick="switch_litho_class('veen')">veen</button>
+    <button class='button stroke klei' onclick="switch_litho_class('klei')">klei</button>
+    <button class='button stroke kleiig_zand' onclick="switch_litho_class('kleiig_zand')">kleiig zand</button>
+    <button class='button stroke zand_fijn' onclick="switch_litho_class('zand_fijn')">zand (fijn)</button>
+    <button class='button stroke zand_matig_grof' onclick="switch_litho_class('zand_matig_grof')">zand (matig-grof)</button>
+    <button class='button stroke zand_grof' onclick="switch_litho_class('zand_grof')">zand (grof)</button>
+  </div>
+  <div id='ctrlBrightness' class='control'>
+    <label for='slider_opacity'>Helderheid: </label>
+    <input id='slider_opacity'  class='slider' type='range' min='0' value='5' max='10' step='0.01'></input>
+  </div>
+  <br></br>
+  Dwarsdoorsnede:
+  <input type='radio' name='crosssectionRadios' id='noord-zuid' value='ns' onclick='crosssection("ns")'/>
+  <label for='always'>noord-zuid</label>
+  <input type='radio' name='crosssectionRadios' id='oost-west' value='ew' onclick='crosssection("ew")'/>
+  <label for='never'>oost-west</label>
+  <input type='radio' name='crosssectionRadios' id='hoog-laag' value='hl' onclick='crosssection("hl")'/>
+  <label for='change'>hoog-laag</label> &nbsp; &nbsp;
+  <div id='ctrlCrosssection' class='control' style='opacity: 0.5;'>
+    <label for='slider_crosssection'>Positie: </label>
+    <input  class='slider' id='slider_crosssection' type='range' value='0.5' min='0' max='1' step='0.01'></input>
+    <output id='crosssectionPos'>2000 meter</output>
+  </div>
+  <div id='navButtons'>
+      <button class='button black' title='terug naar het bovenaanzicht' onclick="document.getElementById('x3d').runtime.resetView();return false;">Bovenaanzicht</button>
+      &nbsp; &nbsp;
+      Achtergrond:
+      <button class='button black' title='maak de achtergrond zwart' onclick="switch_bgcolour('black')">zwart</button>
+      <button class='button white' title='maak de achtergrond wit' onclick="switch_bgcolour('white')">wit</button>
+      &nbsp; &nbsp;
+      <div class='control'>
+        <label for='slider_depth_factor'>  Verticale overdrijving: </label>
+        <input id='slider_depth_factor' class='slider'  type='range' value='20' min='1' max='40' step='1'></input>
+        <output id='depth_factor'>20</output><span style='font-size: 20px;vertical-align: middle;'>&times;</span>
+      </div>
+  </div>
+</div>
+<div id='helptext'>
+  <a href='javascript:void(0)' class='closebtn' onclick='closeHelp()'>&times;</a>
+  <h1>Hulp</h1>
+  <h2>Over de data</h2>
+  <p>De data over de ondergrond zijn gebaseerd op GeoTop. Referentietopogafie is afkomstig van de Basisregistratie Grootschalige Topografie (BGT).</p>
+  <h2>Navigatie</h2>
+  <ul>
+    <li><b>Zoom:</b> muiswiel, of slepen terwijl de  rechter muisknop ingedrukt is.</li>
+    <li><b>Draaien:</b> slepen met linker muisknop ingedrukt.</li>
+    <li><b>Middelpunt verplaatsen:</b> dubbelklik op nieuwe positie.</li>
+    <li><b>Oorspronkelijk gezichtspunt (bovenaanzicht):</b> druk op de R-toets.</li>
+  </ul>
+  <h2>Weergave van ondergrond</h2>
+  <p>Data over de ondergrond kunnen op twee manieren weergegeven worden: als de waarschijnlijkheid van het voorkomen van een bepaalde lithoklasse uit GeoTop, of als een dwarsdoorsnede waarop alle lithoklassen te zien zijn. Wanneer de waarschijnlijkheid van een lithoklasse wordt getoond kan de schuifbalk om de helderheid van de data aan te passen worden gebruikt. Wanneer een dwarsdoorsnede wordt getoond kan de positie van de doorsnede met de positie-schuifbalk worden veranderd.</p>
+  <p>In beide weergavestanden kan de schuifbalk om de verticale overdrijving in te stellen worden gebruikt.</p>
+</div>
+
+<X3D id='x3d' xmlns='http://www.web3d.org/specifications/x3d-namespace'>
+<Scene>
+<Viewpoint id='topdown' centerOfRotation='120000 483000 0' position='120000 483000 6000' znear='20'></Viewpoint>
+<Appearance DEF='road_boundary'>
+  <Material ambientIntensity='0.1' emissiveColor='0.6 0.1 0.1'/>
+</Appearance>
+<Appearance DEF='rail_boundary'>
+  <Material ambientIntensity='0.1' emissiveColor='0.1 0.1 0.6'/>
+</Appearance>
+<Appearance DEF='geotop_boundary'>
+  <Material ambientIntensity='0.2' emissiveColor='0.4 0.4 0.4'/>
+</Appearance>
+<Appearance DEF='building'>
+  <Material diffuseColor='0.7 0.7 0.7'/>
+</Appearance>
+ 
+<Transform id='geotop_transform' translation='120000,483000,-500' scale='8000,4000,1000'>
+
+  <Shape id='subsurface_box'>
+    <IndexedLineSet coordIndex='0 1 2 3 0 4 5 1 -1 5 6 2 -1 6 7 3 -1 7 4'><Coordinate point='
+    -0.5 0.5 0.5
+    0.5 0.5 0.5
+    0.5 -0.5 0.5
+    -0.5 -0.5 0.5
+    -0.5 0.5 -0.5
+    0.5 0.5 -0.5
+    0.5 -0.5 -0.5
+    -0.5 -0.5 -0.5
+    ' /></IndexedLineSet>
+    <Appearance USE="geotop_boundary"/>
+  </Shape>
+      
+  <Switch whichChoice='0' id='volumeSwitcher'>
+    <VolumeData id='subsurfaceProbability' dimensions='1.0 1.0 1.0'>
+      <ImageTextureAtlas id='probabilityAtlas' url='atlas_zand_matig_grof.png' numberOfSlices='100' slicesOverX='10' slicesOverY='10'/>
+      <OpacityMapVolumeStyle id='OpVS' lightFactor='2' opacityFactor='6'>
+       <ImageTexture id='texture' containerField='transferFunction' url='transfer_zand_matig_grof.png'/>
+      </OpacityMapVolumeStyle>
+    </VolumeData>
+    
+    <VolumeData id='subsurfaceLithoclass' dimensions='1.0 1.0 1.0'>
+      <ImageTextureAtlas id='lithoclassAtlas' url='atlas_lithoklasse.png' numberOfSlices='100' slicesOverX='10' slicesOverY='10'/>
+      <MPRVolumeStyle id='MPRVolStyle' positionLine='0.5' originLine='1.0,0.0,1.0' finalLine='1.0,0.0,0.0'></MPRVolumeStyle>
+    </VolumeData>
+  </Switch>
+
+</Transform>
+
+<!-- lift surface structures a bit to combat z-fighting -->
+<Transform translation='0,0,2'>
+<Group id='grp_buildings'>
+  <shape DEF='_G_1'>
+    <appearance USE='building'></appearance>
+    <binaryGeometry DEF='BG_1' vertexCount='119247' primType='"TRIANGLES"' position='119980 483007.5 24' size='8072 4041 48' coord='binBuildings/BG_1_coordBinary.bin+8' normal='binBuildings/BG_1_normalBinary.bin+4' coordType='Int16' normalType='Int8'></binaryGeometry>
+  </shape>
+  <shape DEF='_G_2'>
+    <appearance USE='building'></appearance>
+    <binaryGeometry DEF='BG_2' vertexCount='123012' primType='"TRIANGLES"' position='120098.5 483017.5 24' size='7833 4063 48' coord='binBuildings/BG_2_coordBinary.bin+8' normal='binBuildings/BG_2_normalBinary.bin+4' coordType='Int16' normalType='Int8'></binaryGeometry>
+  </shape>
+  <shape DEF='_G_3'>
+    <appearance USE='building'></appearance>
+    <binaryGeometry DEF='BG_0' vertexCount='124467' primType='"TRIANGLES"' position='120011 483004 28.5' size='7988 4060 57' coord='binBuildings/BG_0_coordBinary.bin+8' normal='binBuildings/BG_0_normalBinary.bin+4' coordType='Int16' normalType='Int8'></binaryGeometry>
+  </shape>
+  <shape DEF='_G_4'>
+    <appearance USE='building'></appearance>
+    <binaryGeometry DEF='BG_3' vertexCount='124032' primType='"TRIANGLES"' position='120040.5 483035 38' size='7893 4102 76' coord='binBuildings/BG_3_coordBinary.bin+8' normal='binBuildings/BG_3_normalBinary.bin+4' coordType='Int16' normalType='Int8'></binaryGeometry>
+  </shape>
+  <shape DEF='_G_5'>
+    <appearance USE='building'></appearance>
+    <binaryGeometry DEF='BG_4' vertexCount='121200' primType='"TRIANGLES"' position='120042.5 483020.5 31' size='8139 4051 62' coord='binBuildings/BG_4_coordBinary.bin+8' normal='binBuildings/BG_4_normalBinary.bin+4' coordType='Int16' normalType='Int8'></binaryGeometry>
+  </shape>
+</Group>
+<Group id='grp_railway'>
+  <shape DEF='_G_1'>
+    <appearance USE='rail_boundary'></appearance>
+    <binaryGeometry DEF='BG_0' vertexCount='5118' primType='"LINES"' position='120050.5 483471.5 0' size='8249 4983 0' coord='binRailway/BG_0_coordBinary.bin+8' coordType='Int16'></binaryGeometry>
+  </shape>
+</Group>
+<Group id='grp_road_parts_line'>
+  <shape DEF='_G_1'>
+    <appearance USE='road_boundary'></appearance>
+    <binaryGeometry DEF='BG_0' vertexCount='34230' primType='"LINES"' position='119990 482910.5 0' size='8380 4529 0' coord='binRoads/BG_0_coordBinary.bin+8' coordType='Int16'></binaryGeometry>
+  </shape>
+</Group>
+</Transform>
+
+</Scene>
+</X3D>
+</body>
+</html>

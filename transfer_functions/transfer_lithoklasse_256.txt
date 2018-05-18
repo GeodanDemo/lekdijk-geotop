@@ -1,0 +1,119 @@
+Image: transfer_lithoklasse_256.png
+  Format: PNG (Portable Network Graphics)
+  Mime type: image/png
+  Class: DirectClass
+  Geometry: 256x1+0+0
+  Units: Undefined
+  Type: PaletteAlpha
+  Base type: TrueColorAlpha
+  Endianess: Undefined
+  Colorspace: sRGB
+  Depth: 8-bit
+  Channel depth:
+    Red: 8-bit
+    Green: 8-bit
+    Blue: 8-bit
+    Alpha: 1-bit
+  Channel statistics:
+    Pixels: 256
+    Red:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 6.13672 (0.0240656)
+      standard deviation: 36.7563 (0.144142)
+      kurtosis: 35.4609
+      skewness: 6.03076
+      entropy: 0.10179
+    Green:
+      min: 0 (0)
+      max: 240 (0.941176)
+      mean: 5.79297 (0.0227175)
+      standard deviation: 33.3253 (0.130687)
+      kurtosis: 31.9209
+      skewness: 5.74257
+      entropy: 0.0928641
+    Blue:
+      min: 0 (0)
+      max: 198 (0.776471)
+      mean: 1.73438 (0.00680147)
+      standard deviation: 15.2629 (0.0598546)
+      kurtosis: 115.218
+      skewness: 10.2296
+      entropy: 0.0634667
+    Alpha:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 7.96875 (0.03125)
+      standard deviation: 44.455 (0.174333)
+      kurtosis: 26.7981
+      skewness: 5.35662
+      entropy: 0.200622
+  Image statistics:
+    Overall:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 5.4082 (0.0212086)
+      standard deviation: 34.1975 (0.134108)
+      kurtosis: 41.1731
+      skewness: 6.47454
+      entropy: 0.0917485
+  Alpha: none   #00000000
+  Colors: 9
+  Histogram:
+       248: (  0,  0,  0,  0) #00000000 none
+         1: ( 24,159, 72,255) #189F48FF srgba(24,159,72,1)
+         1: (152, 80, 69,255) #985045FF srgba(152,80,69,1)
+         1: (182,209,105,255) #B6D169FF srgba(182,209,105,1)
+         1: (193,195,198,255) #C1C3C6FF srgba(193,195,198,1)
+         1: (255,180,  0,255) #FFB400FF srgba(255,180,0,1)
+         1: (255,200,  0,255) #FFC800FF srgba(255,200,0,1)
+         1: (255,220,  0,255) #FFDC00FF srgba(255,220,0,1)
+         1: (255,240,  0,255) #FFF000FF srgba(255,240,0,1)
+  Rendering intent: Perceptual
+  Gamma: 0.45455
+  Chromaticity:
+    red primary: (0.64,0.33)
+    green primary: (0.3,0.6)
+    blue primary: (0.15,0.06)
+    white point: (0.3127,0.329)
+  Matte color: grey74
+  Background color: srgb(255,255,255)
+  Border color: srgb(223,223,223)
+  Transparent color: none
+  Interlace: None
+  Intensity: Undefined
+  Compose: Over
+  Page geometry: 1x1+0+0
+  Dispose: Undefined
+  Iterations: 0
+  Compression: Zip
+  Orientation: Undefined
+  Properties:
+    date:create: 2017-08-03T11:05:20+02:00
+    date:modify: 2017-08-03T11:05:20+02:00
+    png:bKGD: chunk was found (see Background color, above)
+    png:caNv: width=1, height=1, x_offset=0, y_offset=0
+    png:cHRM: chunk was found (see Chromaticity, above)
+    png:gAMA: gamma=0.45454544 (See Gamma, above)
+    png:IHDR.bit-depth-orig: 4
+    png:IHDR.bit_depth: 4
+    png:IHDR.color-type-orig: 3
+    png:IHDR.color_type: 3 (Indexed)
+    png:IHDR.interlace_method: 0 (Not interlaced)
+    png:IHDR.width,height: 256, 1
+    png:PLTE.number_colors: 10
+    png:sRGB: intent=0 (Perceptual Intent)
+    png:text: 2 tEXt/zTXt/iTXt chunks were found
+    png:tIME: 2017-08-03T11:04:11Z
+    png:tRNS: chunk was found
+    png:vpAg: width=1, height=1
+    signature: 9b8073926059d1d58e24489eee492b949203357c9f34a9deedf2c0a050feb98b
+  Artifacts:
+    verbose: true
+  Tainted: False
+  Filesize: 346B
+  Number pixels: 256
+  Pixels per second: 256141B
+  User time: 0.000u
+  Elapsed time: 0:01.000
+  Version: ImageMagick 7.0.5-9 Q16 x64 2017-05-28 http://www.imagemagick.org
